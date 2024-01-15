@@ -1,0 +1,12 @@
+foo: bar
+bar: 42
+database_config:
+  host: localhost
+  port: 8080
+slice: [1, 2, 3]
+map:
+  test: 1
+  test2: 2
+array: [1, 2, 3]
+different_name:
+  hello: world

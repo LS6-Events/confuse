@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "http://example.com/schema.json",
+  "title": "Confuse Configuration Schema",
+  "description": "This is a match of the config struct to the JSON Schema specification.",
+  "required": [
+    "foo",
+    "bar"
+  ],
+  "type": "object",
+  "properties": {
+    "bar": {
+      "type": "integer",
+      "allOf": [
+        {
+          "minimum": 1,
+          "exclusiveMinimum": true
+        },
+        {
+          "maximum": 10,
+          "exclusiveMaximum": true
+        }
+      ]
+    },
+    "foo": {
+      "type": "string",
+      "allOf": [
+        {
+          "enum": [
+            "foo",
+            "bar"
+          ]
+        }
+      ]
+    }
+  }
+}

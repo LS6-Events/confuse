@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "http://example.com/schema.json",
+  "title": "Confuse Configuration Schema",
+  "description": "This is a match of the config struct to the JSON Schema specification.",
+  "type": "object",
+  "properties": {
+    "array": {
+      "maxItems": 3,
+      "minItems": 3,
+      "type": "array",
+      "items": {
+        "type": "integer"
+      }
+    },
+    "bar": {
+      "type": "integer"
+    },
+    "database_config": {
+      "type": "object",
+      "properties": {
+        "host": {
+          "type": "string"
+        },
+        "port": {
+          "type": "integer"
+        }
+      }
+    },
+    "foo": {
+      "type": "string"
+    },
+    "map": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer"
+      }
+    },
+    "slice": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      }
+    }
+  }
+}

@@ -1,0 +1,4 @@
+# yaml-language-server: $schema=./schema.json
+
+foo: different
+bar: 100

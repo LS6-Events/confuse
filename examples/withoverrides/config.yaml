@@ -1,0 +1,5 @@
+foo: bar
+bar: 42
+database_config:
+  host: localhost
+  port: 8080
