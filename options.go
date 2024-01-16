@@ -18,6 +18,18 @@ func WithSourceFiles(files ...string) Option {
 	}
 }
 
+// WithSourceLoaders sets the source loaders to use to load the files.
+// It can be used multiple times to load from multiple loaders.
+// The first loader in the list takes the lowest precedence, and the last loader takes the highest precedence.
+// They take a higher precedence than SourceFiles.
+// E.g. if the same key is defined in both files, the value in the last loader will be used.
+// Base -> Override 1 -> Override 2 -> Override 3
+func WithSourceLoaders(loader ...Loader) Option {
+	return func(s *Service) {
+		s.SourceLoaders = append(s.SourceLoaders, loader...)
+	}
+}
+
 // WithExactOutputJSONSchema sets the path to the output JSON schema file that is generated from the unmarshalled configuration.
 // If this is set, the output JSON schema will be written to this file.
 func WithExactOutputJSONSchema(path string) Option {

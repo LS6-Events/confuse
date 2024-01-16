@@ -238,3 +238,49 @@ func main() {
 There is an example of using validation in the [examples](./examples/withjsonschema) directory. It will also use these tags to generate the correct JSON schema where appropriate.
 
 Note, we also have an option to create a _fuzzy_ schema, which will not include the `required` tags (it's useful for setting the schema of override files as the nature of them may indicate that not all properties are set). This is done by using the `confuse.WithFuzzyOutputJSONSchema(filepath string)` option.
+
+### Custom Sources
+
+You can also create your own custom sources. This can be done by using the `confuse.WithSourceLoaders(func() (map[string]any, error))` option.
+
+**Note: this step happens before the unmarshalling to a struct. Therefore if you want it to override any existing configuration keys, you must preserve the case of the keys.**
+
+```go
+package main
+
+import (
+    "fmt"
+    "github.com/ls6-events/confuse"
+)
+
+type Config struct {
+    Name string `config:"name"`
+    Port int    `config:"port"`
+}
+
+func main() {
+    // Create a new configuration struct.
+    var config Config
+
+    // Load the configuration from the default sources.
+    err := confuse.New(
+        confuse.WithSourceFiles("./config.yaml"), 
+        confuse.WithSourceLoaders(func() (map[string]interface{}, error) {
+            return map[string]interface{}{
+                "name": "override",
+            }, nil
+        }),
+    ).Unmarshal(&config)
+
+    // Check for errors.
+    if err != nil {
+        panic(err)
+    }
+
+    // Print the configuration. 
+    fmt.Printf("Name: %s\n", config.Name) // override
+    fmt.Printf("Port: %d\n", config.Port) // 8080
+}
+```
+
+There is an example of using custom sources in the [examples](./examples/withloaders) directory.

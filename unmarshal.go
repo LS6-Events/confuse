@@ -30,6 +30,18 @@ func (s *Service) Unmarshal(obj any) error {
 		err = mergo.Merge(&fullMap, mappedResult, s.MergoConfig...)
 	}
 
+	for _, loader := range s.SourceLoaders {
+		mappedResult, err := loader()
+		if err != nil {
+			return err
+		}
+
+		err = mergo.Merge(&fullMap, mappedResult, s.MergoConfig...)
+		if err != nil {
+			return err
+		}
+	}
+
 	err := parseMapToStruct(obj, fullMap)
 	if err != nil {
 		return err

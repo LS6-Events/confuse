@@ -13,6 +13,13 @@ type Service struct {
 	// Base -> Override 1 -> Override 2 -> Override 3
 	SourceFiles []string
 
+	// SourceLoaders is the list of loaders to use to load the files.
+	// The first loader in the list takes the lowest precedence, and the last loader takes the highest precedence.
+	// They take a higher precedence than SourceFiles.
+	// E.g. if the same key is defined in both files, the value in the last loader will be used.
+	// Base -> Override 1 -> Override 2 -> Override 3
+	SourceLoaders []Loader
+
 	// ExactOutputJSONSchema is the path to the output JSON schema file that is generated from the unmarshalled configuration.
 	// If this is set, the output JSON schema will be written to this file.
 	ExactOutputJSONSchema string
