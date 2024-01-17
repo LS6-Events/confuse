@@ -24,4 +24,6 @@ func TestConfig(t *testing.T) {
 	require.Equal(t, [3]int{1, 2, 3}, config.Array)
 
 	require.Equal(t, "world", config.DiffName.Hello)
+
+	require.Equal(t, "world", config.PointerStruct.Hello)
 }
