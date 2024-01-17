@@ -3,6 +3,7 @@ package confuse
 import (
 	"github.com/stretchr/testify/require"
 	"testing"
+	"time"
 )
 
 func TestParseMapToStruct(t *testing.T) {
@@ -241,5 +242,32 @@ func TestParseMapToStruct(t *testing.T) {
 		require.Equal(t, 42, s.World)
 		require.Equal(t, true, s.Test)
 		require.Equal(t, 42.42, s.Float)
+	})
+
+	t.Run("should be able to parse a field if it is an exact match type (e.g. time.Time)", func(t *testing.T) {
+		var s struct {
+			Hello string
+			World int
+			Test  bool
+			Float float64
+			Time  time.Time
+		}
+
+		m := map[string]any{
+			"Hello": "Hello",
+			"World": 42,
+			"Test":  true,
+			"Float": 42.42,
+			"Time":  time.Date(2019, 1, 1, 0, 0, 0, 0, time.UTC),
+		}
+
+		err := parseMapToStruct(&s, m)
+		require.NoError(t, err)
+
+		require.Equal(t, "Hello", s.Hello)
+		require.Equal(t, 42, s.World)
+		require.Equal(t, true, s.Test)
+		require.Equal(t, 42.42, s.Float)
+		require.Equal(t, time.Date(2019, 1, 1, 0, 0, 0, 0, time.UTC), s.Time)
 	})
 }

@@ -12,3 +12,4 @@ different_name:
   hello: world
 pointer_struct:
   hello: world
+date: 2019-01-01

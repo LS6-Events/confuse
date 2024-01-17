@@ -60,6 +60,13 @@ func parseMapToStruct(parent any, m map[string]any) error {
 }
 
 func parseField(field reflect.Value, m map[string]any, key string, value any) error {
+	// If the value can be converted initially to the type of the field, then we can set it.
+	if reflect.TypeOf(value).ConvertibleTo(field.Type()) {
+		field.Set(reflect.ValueOf(value).Convert(field.Type()))
+		return nil
+	}
+
+	// Otherwise we need to parse the value.
 	switch field.Kind() {
 	case reflect.Ptr:
 		if field.IsNil() {
