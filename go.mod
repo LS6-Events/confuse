@@ -7,6 +7,7 @@ require (
 	github.com/go-playground/validator/v10 v10.16.0
 	github.com/iancoleman/strcase v0.3.0
 	github.com/json-iterator/go v1.1.12
+	github.com/ls6-events/validjsonator v1.0.1
 	github.com/pelletier/go-toml/v2 v2.1.1
 	github.com/stretchr/testify v1.8.4
 	gopkg.in/yaml.v3 v3.0.1
