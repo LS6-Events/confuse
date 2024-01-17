@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/stretchr/testify/require"
 	"testing"
+	"time"
 )
 
 func TestConfig(t *testing.T) {
@@ -26,4 +27,6 @@ func TestConfig(t *testing.T) {
 	require.Equal(t, "world", config.DiffName.Hello)
 
 	require.Equal(t, "world", config.PointerStruct.Hello)
+
+	require.Equal(t, "2019-01-01T00:00:00Z", config.Date.Format(time.RFC3339))
 }

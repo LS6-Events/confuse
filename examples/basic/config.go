@@ -1,6 +1,9 @@
 package main
 
-import "github.com/ls6-events/confuse"
+import (
+	"github.com/ls6-events/confuse"
+	"time"
+)
 
 type Config struct {
 	Foo            string `validate:"required"`
@@ -14,6 +17,8 @@ type Config struct {
 	DiffName DiffName `config:"different_name"`
 
 	PointerStruct *PointerStruct
+
+	Date time.Time
 }
 
 type DatabaseConfig struct {
