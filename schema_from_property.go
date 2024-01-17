@@ -1,18 +1,20 @@
 package confuse
 
 import (
-	"dario.cat/mergo"
 	"errors"
 	"reflect"
+
+	"dario.cat/mergo"
+	"github.com/ls6-events/validjsonator"
 )
 
-func (s *Service) schemaFromType(t reflect.Type, fuzzy bool) (Schema, error) {
-	var schema Schema
+func (s *Service) schemaFromType(t reflect.Type, fuzzy bool) (validjsonator.Schema, error) {
+	var schema validjsonator.Schema
 
 	switch t.Kind() {
 	case reflect.Struct:
 		schema.Type = "object"
-		schema.Properties = make(map[string]Schema)
+		schema.Properties = make(map[string]validjsonator.Schema)
 		for i := 0; i < t.NumField(); i++ {
 			field := t.Field(i)
 			configTagName, _ := extractValuesFromTag(field.Tag.Get(configTag))
@@ -27,17 +29,19 @@ func (s *Service) schemaFromType(t reflect.Type, fuzzy bool) (Schema, error) {
 
 			fieldSchema, err := s.schemaFromType(field.Type, fuzzy)
 			if err != nil {
-				return Schema{}, err
+				return validjsonator.Schema{}, err
 			}
 
-			validationSchema, required := s.validateTagsToSchema(field.Tag.Get("validate"))
-			if required && !fuzzy {
-				schema.Required = append(schema.Required, configTagName)
-			}
+			if s.ShouldValidate {
+				validationSchema, required := validjsonator.ValidationTagsToSchema(field.Tag.Get("validate"))
+				if required && !fuzzy {
+					schema.Required = append(schema.Required, configTagName)
+				}
 
-			err = mergo.Merge(&fieldSchema, validationSchema, mergo.WithOverride)
-			if err != nil {
-				return Schema{}, err
+				err = mergo.Merge(&fieldSchema, validationSchema, mergo.WithOverride)
+				if err != nil {
+					return validjsonator.Schema{}, err
+				}
 			}
 
 			schema.Properties[configTagName] = fieldSchema
@@ -46,13 +50,13 @@ func (s *Service) schemaFromType(t reflect.Type, fuzzy bool) (Schema, error) {
 		var err error
 		schema, err = s.schemaFromType(t.Elem(), fuzzy)
 		if err != nil {
-			return Schema{}, err
+			return validjsonator.Schema{}, err
 		}
 	case reflect.Slice:
 		schema.Type = "array"
 		itemsSchema, err := s.schemaFromType(t.Elem(), fuzzy)
 		if err != nil {
-			return Schema{}, err
+			return validjsonator.Schema{}, err
 		}
 
 		schema.Items = &itemsSchema
@@ -60,7 +64,7 @@ func (s *Service) schemaFromType(t reflect.Type, fuzzy bool) (Schema, error) {
 		schema.Type = "array"
 		itemsSchema, err := s.schemaFromType(t.Elem(), fuzzy)
 		if err != nil {
-			return Schema{}, err
+			return validjsonator.Schema{}, err
 		}
 
 		schema.Items = &itemsSchema
@@ -70,7 +74,7 @@ func (s *Service) schemaFromType(t reflect.Type, fuzzy bool) (Schema, error) {
 		schema.Type = "object"
 		additionalPropertiesSchema, err := s.schemaFromType(t.Elem(), fuzzy)
 		if err != nil {
-			return Schema{}, err
+			return validjsonator.Schema{}, err
 		}
 
 		schema.AdditionalProperties = &additionalPropertiesSchema
@@ -87,7 +91,7 @@ func (s *Service) schemaFromType(t reflect.Type, fuzzy bool) (Schema, error) {
 	case reflect.Interface:
 		// Any type, we just leave the schema empty
 	default:
-		return Schema{}, errors.New("unknown type")
+		return validjsonator.Schema{}, errors.New("unknown type")
 	}
 
 	return schema, nil
