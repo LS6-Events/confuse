@@ -10,3 +10,5 @@ map:
 array: [1, 2, 3]
 different_name:
   hello: world
+pointer_struct:
+  hello: world

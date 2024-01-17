@@ -12,6 +12,8 @@ type Config struct {
 	Array [3]int
 
 	DiffName DiffName `config:"different_name"`
+
+	PointerStruct *PointerStruct
 }
 
 type DatabaseConfig struct {
@@ -20,6 +22,10 @@ type DatabaseConfig struct {
 }
 
 type DiffName struct {
+	Hello string
+}
+
+type PointerStruct struct {
 	Hello string
 }
 

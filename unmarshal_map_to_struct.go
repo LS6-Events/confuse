@@ -62,6 +62,10 @@ func parseMapToStruct(parent any, m map[string]any) error {
 func parseField(field reflect.Value, m map[string]any, key string, value any) error {
 	switch field.Kind() {
 	case reflect.Ptr:
+		if field.IsNil() {
+			field.Set(reflect.New(field.Type().Elem()))
+		}
+
 		return parseField(field.Elem(), m, key, value)
 	case reflect.Struct:
 		if mappedValue, ok := value.(map[string]any); ok {
