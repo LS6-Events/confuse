@@ -21,6 +21,18 @@ func (s *Service) Unmarshal(obj any) error {
 		}
 	}
 
+	for _, loader := range s.SourceLoaders {
+		mappedResult, err := loader()
+		if err != nil {
+			return err
+		}
+
+		err = mergo.Merge(&fullMap, mappedResult, s.MergoConfig...)
+		if err != nil {
+			return err
+		}
+	}
+
 	if s.ShouldUseEnvironmentVariables {
 		mappedResult, err := s.unmarshalENV(os.Environ())
 		if err != nil {

@@ -1,0 +1,11 @@
+go 1.21
+
+use (
+	.
+	examples/basic
+	examples/withoverrides
+	examples/withmultitype
+	examples/withjsonschema
+	examples/withvalidation
+	examples/withloaders
+)
