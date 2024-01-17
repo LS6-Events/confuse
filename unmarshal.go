@@ -21,15 +21,6 @@ func (s *Service) Unmarshal(obj any) error {
 		}
 	}
 
-	if s.ShouldUseEnvironmentVariables {
-		mappedResult, err := s.unmarshalENV(os.Environ())
-		if err != nil {
-			return err
-		}
-
-		err = mergo.Merge(&fullMap, mappedResult, s.MergoConfig...)
-	}
-
 	for _, loader := range s.SourceLoaders {
 		mappedResult, err := loader()
 		if err != nil {
@@ -40,6 +31,15 @@ func (s *Service) Unmarshal(obj any) error {
 		if err != nil {
 			return err
 		}
+	}
+
+	if s.ShouldUseEnvironmentVariables {
+		mappedResult, err := s.unmarshalENV(os.Environ())
+		if err != nil {
+			return err
+		}
+
+		err = mergo.Merge(&fullMap, mappedResult, s.MergoConfig...)
 	}
 
 	err := parseMapToStruct(obj, fullMap)

@@ -15,7 +15,7 @@ type Service struct {
 
 	// SourceLoaders is the list of loaders to use to load the files.
 	// The first loader in the list takes the lowest precedence, and the last loader takes the highest precedence.
-	// They take a higher precedence than SourceFiles.
+	// They take a higher precedence than SourceFiles, but lower than EnvironmentVariables.
 	// E.g. if the same key is defined in both files, the value in the last loader will be used.
 	// Base -> Override 1 -> Override 2 -> Override 3
 	SourceLoaders []Loader
@@ -45,6 +45,7 @@ type Service struct {
 
 	// ShouldUseEnvironmentVariables is a flag to indicate whether to use the environment variables to override the configuration.
 	// If this is set to true, the environment variables will be used to override the configuration.
+	// It overrides the configuration from the files and the loaders.
 	ShouldUseEnvironmentVariables bool
 
 	// EnvironmentVariablesPrefix is the prefix of the environment variables to use to override the configuration.

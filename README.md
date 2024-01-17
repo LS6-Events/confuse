@@ -265,8 +265,8 @@ func main() {
     // Load the configuration from the default sources.
     err := confuse.New(
         confuse.WithSourceFiles("./config.yaml"), 
-        confuse.WithSourceLoaders(func() (map[string]interface{}, error) {
-            return map[string]interface{}{
+        confuse.WithSourceLoaders(func() (map[string]any, error) {
+            return map[string]any{
                 "name": "override",
             }, nil
         }),
