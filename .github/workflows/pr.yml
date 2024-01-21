@@ -1,0 +1,48 @@
+name: PR
+on:
+  pull_request:
+    branches:
+      - 'main'
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.21.0
+      - name: go fmt
+        run: if [ "$(gofmt -s -l . | wc -l)" -gt 0 ]; then exit 1; fi
+  test:
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v4
+        with:
+          go-version: 1.21
+      - run: go test -v ./...
+  setup-examples:
+    runs-on: ubuntu-latest
+    outputs:
+      directories: ${{ steps.set-directories.outputs.directories }}
+    steps:
+      - uses: actions/checkout@v2
+      - id: set-directories
+        run: echo "directories=$(ls -ds examples/*/ | jq -R -s -c 'split("\n")[:-1]')" >> $GITHUB_OUTPUT
+  test-examples:
+    runs-on: ubuntu-latest
+    needs: setup-examples
+    strategy:
+      fail-fast: false
+      matrix:
+        manifest: ${{ fromJson(needs.setup-examples.outputs.directories) }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v4
+        with:
+          go-version: 1.21
+          cache-dependency-path: ${{ matrix.manifest }}/go.sum
+      - run: go test -v ./...
