@@ -2,6 +2,7 @@ package confuse
 
 import (
 	"dario.cat/mergo"
+	"github.com/mitchellh/mapstructure"
 	"os"
 )
 
@@ -42,7 +43,17 @@ func (s *Service) Unmarshal(obj any) error {
 		err = mergo.Merge(&fullMap, mappedResult, s.MergoConfig...)
 	}
 
-	err := parseMapToStruct(obj, fullMap)
+	decoder, err := mapstructure.NewDecoder(&mapstructure.DecoderConfig{
+		TagName:          configTag,
+		WeaklyTypedInput: true,
+		Result:           obj,
+		MatchName:        compareName,
+	})
+	if err != nil {
+		return err
+	}
+
+	err = decoder.Decode(fullMap)
 	if err != nil {
 		return err
 	}

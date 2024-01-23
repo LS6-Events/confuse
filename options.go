@@ -5,6 +5,8 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
+const configTag = "config"
+
 type Option func(*Service)
 
 // WithSourceFiles sets the source files to read from.
