@@ -1,6 +1,9 @@
 # Confuse
 Confuse is a configuration library for Golang that is built on the idea of using a struct to manage your configuration data. This struct can then be populated with a _fusion_ of configuration from any number of configuration sources such as environment variables, configuration files, and more.
 
+The name Confuse was a merging between _config_ and _fusion_, to indicate that two or more configuration files can 
+be "fused" together in an override specification.
+
 It is designed to be a lightweight, strongly typed and easy to use alternative to using `map[string]interface{}` to load configuration data, or accessing fields using `.Get()` from [viper](https://www.github.com/spf13/viper) and parsing the types directly.
 
 ## Features
