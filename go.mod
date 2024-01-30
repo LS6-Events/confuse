@@ -1,13 +1,13 @@
-module github.com/ls6-events/confuse
+module withvalidation
 
 go 1.21
 
 require (
 	dario.cat/mergo v1.0.0
-	github.com/go-playground/validator/v10 v10.17.0
+	github.com/go-playground/validator/v10 v10.16.0
 	github.com/iancoleman/strcase v0.3.0
 	github.com/json-iterator/go v1.1.12
-	github.com/ls6-events/validjsonator v1.0.1
+	github.com/ls6-events/validjsonator v1.1.0
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/pelletier/go-toml/v2 v2.1.1
 	github.com/stretchr/testify v1.8.4
