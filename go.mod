@@ -1,4 +1,4 @@
-module withvalidation
+module github.com/ls6-events/confuse
 
 go 1.21
 
