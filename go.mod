@@ -4,7 +4,7 @@ go 1.21
 toolchain go1.22.5
 
 require (
-	dario.cat/mergo v1.0.0
+	dario.cat/mergo v1.0.1
 	github.com/go-playground/validator/v10 v10.22.0
 	github.com/iancoleman/strcase v0.3.0
 	github.com/json-iterator/go v1.1.12
