@@ -1,6 +1,7 @@
 module withjsonschema
 
-go 1.21
+go 1.23.0
+
 toolchain go1.23.7
 
 require (
