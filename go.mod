@@ -1,7 +1,8 @@
 module github.com/ls6-events/confuse
 
-go 1.21
-toolchain go1.22.5
+go 1.21.0
+
+toolchain go1.23.4
 
 require (
 	dario.cat/mergo v1.0.1
