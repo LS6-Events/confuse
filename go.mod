@@ -1,11 +1,12 @@
 module github.com/ls6-events/confuse
 
-go 1.21
+go 1.21.0
+
 toolchain go1.24.1
 
 require (
 	dario.cat/mergo v1.0.2
-	github.com/go-playground/validator/v10 v10.26.0
+	github.com/go-playground/validator/v10 v10.27.0
 	github.com/iancoleman/strcase v0.3.0
 	github.com/json-iterator/go v1.1.12
 	github.com/ls6-events/validjsonator v1.1.0
